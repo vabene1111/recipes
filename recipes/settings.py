@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import ast
 import os
 import random
+import re
 import string
 
 from django.contrib import messages
@@ -172,16 +173,41 @@ WSGI_APPLICATION = 'recipes.wsgi.application'
 
 # Database
 # Load settings from env files
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE') if os.getenv('DB_ENGINE') else 'django.db.backends.sqlite3',
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'NAME': os.getenv('POSTGRES_DB') if os.getenv('POSTGRES_DB') else 'db.sqlite3',
+if os.getenv('DATABASE_URL'):
+    match = re.match(
+        r'(?P<schema>\w+):\/\/(?P<user>[\w\d_-]+)(:(?P<password>[^@]+))?@(?P<host>[^:/]+)(:(?P<port>\d+))?(\/(?P<database>[\w\d_-]+))?',
+        'postgres://postgres:06647e911147974f4fcbff4f6044f6ff@dokku-postgres-num:5432/num'
+    )
+    settings = match.groupdict()
+    schema = settings['schema']
+    if schema.startswith('postgres'):
+        engine = 'django.db.backends.postgresql'
+    elif schema == 'sqlite':
+        engine = 'django.db.backends.sqlite3'
+    else:
+        raise Exception("Unsupported database schema: '%s'" % schema)
+
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE') if os.getenv('DB_ENGINE') else 'django.db.backends.sqlite3',
+            'HOST': settings['host'],
+            'PORT': settings['port'],
+            'USER': settings['user'],
+            'PASSWORD': settings['password'],
+            'NAME': settings['database']
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE') if os.getenv('DB_ENGINE') else 'django.db.backends.sqlite3',
+            'HOST': os.getenv('POSTGRES_HOST'),
+            'PORT': os.getenv('POSTGRES_PORT'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'NAME': os.getenv('POSTGRES_DB') if os.getenv('POSTGRES_DB') else 'db.sqlite3',
+        }
+    }
 
 # Vue webpack settings
 VUE_DIR = os.path.join(BASE_DIR, 'vue')
