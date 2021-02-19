@@ -12,12 +12,12 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import ast
 import os
 import random
+import re
 import string
 
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
-import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -174,8 +174,28 @@ WSGI_APPLICATION = 'recipes.wsgi.application'
 # Database
 # Load settings from env files
 if os.getenv('DATABASE_URL'):
+    match = re.match(
+        r'(?P<schema>\w+):\/\/(?P<user>[\w\d_-]+)(:(?P<password>[^@]+))?@(?P<host>[^:/]+)(:(?P<port>\d+))?(\/(?P<database>[\w\d_-]+))?',
+        'postgres://postgres:06647e911147974f4fcbff4f6044f6ff@dokku-postgres-num:5432/num'
+    )
+    settings = match.groupdict()
+    schema = settings['schema']
+    if schema.startswith('postgres'):
+        engine = 'django.db.backends.postgresql'
+    elif schema == 'sqlite':
+        engine = 'django.db.backends.sqlite3'
+    else:
+        raise Exception("Unsupported database schema: '%s'" % schema)
+
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600)
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE') if os.getenv('DB_ENGINE') else 'django.db.backends.sqlite3',
+            'HOST': settings['host'],
+            'PORT': settings['port'],
+            'USER': settings['user'],
+            'PASSWORD': settings['password'],
+            'NAME': settings['database']
+        }
     }
 else:
     DATABASES = {
