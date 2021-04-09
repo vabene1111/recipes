@@ -5,6 +5,8 @@ from datetime import date, timedelta
 from annoying.fields import AutoOneToOneField
 from django.contrib import auth
 from django.contrib.auth.models import Group, User
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
@@ -13,6 +15,7 @@ from django_scopes import ScopedManager
 
 from recipes.settings import (COMMENT_PREF_DEFAULT, FRACTION_PREF_DEFAULT,
                               STICKY_NAV_PREF_DEFAULT)
+from cookbook.managers import RecipeSearchManager
 
 
 def get_user_name(self):
@@ -376,6 +379,10 @@ class NutritionInformation(models.Model, PermissionModelMixin):
         return 'Nutrition'
 
 
+# TODO adjust model based on DB capabilities
+# options to have multiple recipe models based on DB capability (to drive search)
+# required_db_features, required-db-vendor
+# https://docs.djangoproject.com/en/3.1/ref/models/options/#required-db-vendor
 class Recipe(models.Model, PermissionModelMixin):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=512, blank=True, null=True)
@@ -400,12 +407,16 @@ class Recipe(models.Model, PermissionModelMixin):
     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    search_vector = SearchVectorField(null=True)
 
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
-    objects = ScopedManager(space='space')
+    objects = ScopedManager(_manager_class=RecipeSearchManager, space='space')
 
     def __str__(self):
         return self.name
+
+    class Meta():
+        indexes = (GinIndex(fields=["search_vector"]),)
 
 
 class Comment(models.Model, PermissionModelMixin):

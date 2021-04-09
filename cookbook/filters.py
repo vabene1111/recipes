@@ -1,7 +1,5 @@
 import django_filters
 from django.conf import settings
-from django.contrib.postgres.search import TrigramSimilarity
-from django.db.models import Q
 from django.utils.translation import gettext as _
 from django_scopes import scopes_disabled
 
@@ -53,6 +51,8 @@ with scopes_disabled():
                                                            'django.db.backends.postgresql']:
                 queryset = queryset.annotate(similarity=TrigramSimilarity('name', value), ).filter(
                     Q(similarity__gt=0.1) | Q(name__unaccent__icontains=value)).order_by('-similarity')
+            if settings.DATABASES['default']['ENGINE'] in ['django.db.backends.postgresql_psycopg2', 'django.db.backends.postgresql']:
+                return queryset
             else:
                 queryset = queryset.filter(name__icontains=value)
             return queryset
@@ -61,14 +61,12 @@ with scopes_disabled():
             model = Recipe
             fields = ['name', 'keywords', 'foods', 'internal']
 
-
     class FoodFilter(django_filters.FilterSet):
         name = django_filters.CharFilter(lookup_expr='icontains')
 
         class Meta:
             model = Food
             fields = ['name']
-
 
     class ShoppingListFilter(django_filters.FilterSet):
 
