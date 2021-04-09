@@ -72,7 +72,7 @@ def search(request):
         if request.user.userpreference.search_style == UserPreference.LARGE:
             table = RecipeTable(f.qs)
         else:
-            table = RecipeTable(f.qs)
+            table = RecipeTableSmall(f.qs)
         RequestConfig(request, paginate={'per_page': 25}).configure(table)
 
         if request.GET == {} and request.user.userpreference.show_recent:
