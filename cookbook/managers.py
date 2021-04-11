@@ -17,8 +17,8 @@ class RecipeSearchManager(models.Manager):
         )
         search_vectors = (
             SearchVector('search_vector')
-            + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='A', config='english')
-            + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='A', config='english'))
+            + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='B', config='english')
+            + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='B', config='english'))
         search_rank = SearchRank(search_vectors, search_query)
         # trigram_similarity = TrigramSimilarity(
         #     'headline', search_text

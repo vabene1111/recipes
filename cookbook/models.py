@@ -3,6 +3,7 @@ import uuid
 from datetime import date, timedelta
 
 from annoying.fields import AutoOneToOneField
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import Group, User
 from django.contrib.postgres.indexes import GinIndex
@@ -379,10 +380,6 @@ class NutritionInformation(models.Model, PermissionModelMixin):
         return 'Nutrition'
 
 
-# TODO adjust model based on DB capabilities
-# options to have multiple recipe models based on DB capability (to drive search)
-# required_db_features, required-db-vendor
-# https://docs.djangoproject.com/en/3.1/ref/models/options/#required-db-vendor
 class Recipe(models.Model, PermissionModelMixin):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=512, blank=True, null=True)
@@ -407,10 +404,15 @@ class Recipe(models.Model, PermissionModelMixin):
     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    search_vector = SearchVectorField(null=True)
 
+    search_vector = SearchVectorField(null=True)
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
-    objects = ScopedManager(_manager_class=RecipeSearchManager, space='space')
+
+    # load custom manager for full text search if postgress is available
+    if settings.DATABASES['default']['ENGINE'] in ['django.db.backends.postgresql_psycopg2', 'django.db.backends.postgresql']:
+        objects = ScopedManager(_manager_class=RecipeSearchManager, space='space')
+    else:
+        objects = ScopedManager(space='space')
 
     def __str__(self):
         return self.name

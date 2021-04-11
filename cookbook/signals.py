@@ -10,12 +10,13 @@ def update_recipe_search_vector(sender, instance=None, created=False, **kwargs):
     if not instance:
         return
 
+    # needed to ensure search vector update doesn't trigger recursion
     if hasattr(instance, '_dirty'):
         return
 
     instance.search_vector = (
         SearchVector('name', weight='A', config='english')
-        + SearchVector('description', weight='B', config='english')
+        + SearchVector('description', weight='C', config='english')
     )
 
     try:
