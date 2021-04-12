@@ -1,8 +1,10 @@
 from django.contrib.postgres.search import SearchVector
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import translation
 
 from cookbook.models import Recipe
+from cookbook.managers import DICTIONARY
 
 
 @receiver(post_save, sender=Recipe)
@@ -14,9 +16,10 @@ def update_recipe_search_vector(sender, instance=None, created=False, **kwargs):
     if hasattr(instance, '_dirty'):
         return
 
+    language = DICTIONARY.get(translation.get_language(), 'simple')
     instance.search_vector = (
-        SearchVector('name', weight='A', config='english')
-        + SearchVector('description', weight='C', config='english')
+        SearchVector('name', weight='A', config=language)
+        + SearchVector('description', weight='C', config=language)
     )
 
     try:
