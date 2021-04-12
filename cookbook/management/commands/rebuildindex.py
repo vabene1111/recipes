@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django_scopes import scopes_disabled
 from django.utils.translation import gettext_lazy as _
 
