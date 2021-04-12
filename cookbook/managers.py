@@ -20,9 +20,12 @@ class RecipeSearchManager(models.Manager):
             + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='B', config='english')
             + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='B', config='english'))
         search_rank = SearchRank(search_vectors, search_query)
-        # trigram_similarity = TrigramSimilarity(
-        #     'headline', search_text
-        # )
+        # the results from trigram were really, really bad
+        # trigram = (
+        #     TrigramSimilarity('name', search_text)
+        #     + TrigramSimilarity('description', search_text)
+        #     + TrigramSimilarity('steps__ingredients__food__name', search_text)
+        #     + TrigramSimilarity('keywords__name', search_text))
         return (
             self.get_queryset()
             .annotate(search=search_vectors, rank=search_rank)
