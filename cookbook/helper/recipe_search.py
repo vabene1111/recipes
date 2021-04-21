@@ -1,13 +1,10 @@
 from functools import reduce
 
-from cookbook.models import Recipe
 from recipes import settings
 from django.contrib.postgres.aggregates import StringAgg
 from django.contrib.postgres.search import (
     SearchQuery, SearchRank, SearchVector, TrigramSimilarity,
 )
-from django.db import models
-from django.db.models import Q
 from django.utils import translation
 
 
@@ -57,7 +54,7 @@ def search_recipes(queryset, params):
             queryset.annotate(
                 search=search_vectors,
                 rank=search_rank,)
-            .filter(Q(search=search_query))
+            .filter(search=search_query)
             .order_by('-rank'))
     else:
         queryset = queryset.filter(name__icontains=search_string)
