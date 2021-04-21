@@ -59,10 +59,6 @@ def search(request):
     if has_group_permission(request.user, ('guest',)):
         if request.user.userpreference.search_style == UserPreference.NEW:
             return search_v2(request)
-
-        f = RecipeFilter(request.GET,
-                         queryset=Recipe.objects.filter(space=request.user.userpreference.space).all().order_by('name'),
-                         space=request.space)
         if settings.DATABASES['default']['ENGINE'] in ['django.db.backends.postgresql_psycopg2', 'django.db.backends.postgresql']:
             qs = Recipe.objects.search(request.GET.get('name', ''), space=request.space)
         else:
