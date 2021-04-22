@@ -5,6 +5,7 @@ from django.contrib.postgres.aggregates import StringAgg
 from django.contrib.postgres.search import (
     SearchQuery, SearchRank, SearchVector, TrigramSimilarity,
 )
+from django.db.models import Q
 from django.utils import translation
 
 
@@ -42,19 +43,26 @@ def search_recipes(queryset, params):
         language = DICTIONARY.get(translation.get_language(), 'simple')
         search_query = SearchQuery(
             search_string,
+            search_type="websearch",
             config=language,
-            search_type="websearch"
         )
         search_vectors = (
             SearchVector('search_vector')
             + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='B', config=language)
             + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='B', config=language))
+        trigram = (
+            TrigramSimilarity('name', search_string)
+            + TrigramSimilarity('description', search_string)
+        )
         search_rank = SearchRank(search_vectors, search_query)
         queryset = (
             queryset.annotate(
                 search=search_vectors,
-                rank=search_rank,)
-            .filter(search=search_query)
+                rank=search_rank + trigram,
+            )
+            .filter(
+                search_vector=search_query
+            )
             .order_by('-rank'))
     else:
         queryset = queryset.filter(name__icontains=search_string)
