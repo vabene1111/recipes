@@ -106,3 +106,16 @@ def message_of_the_day():
 @register.simple_tag
 def is_debug():
     return settings.DEBUG
+
+
+@register.simple_tag()
+def markdown_link():
+    return f"{_('You can use markdown to format this field. See the ')}<a target='_blank' href='{reverse('docs_markdown')}'>{_('docs here')}</a>"
+
+
+@register.simple_tag
+def base_path(request, path_type):
+    if path_type == 'base':
+        return request._current_scheme_host + request.META.get('HTTP_X_SCRIPT_NAME', '')
+    elif path_type == 'script':
+        return request.META.get('HTTP_X_SCRIPT_NAME', '')

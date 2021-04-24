@@ -226,9 +226,11 @@
 {% endblock script %}
 
 <script type="application/javascript">
+    localStorage.setItem('SCRIPT_NAME', "{% base_path request 'script' %}")
+    localStorage.setItem('BASE_PATH', "{% base_path request 'base' %}")
     window.addEventListener("load", () => {
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("{% url 'service_worker' %}", {scope: '/'}).then(function (reg) {
+            navigator.serviceWorker.register("{% url 'service_worker' %}", {scope: "{% base_path request 'base' %}" + '/'}).then(function (reg) {
 
             }).catch(function (err) {
                 console.warn('Error whilst registering service worker', err);
