@@ -46,10 +46,11 @@ def search_recipes(queryset, params):
             search_type="websearch",
             config=language,
         )
+        # TODO make icontains a configurable option - it could eventually have performance impacts
         search_vectors = (
             SearchVector('search_vector')
-            + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='B', config=language)
-            + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='B', config=language))
+            + SearchVector(StringAgg('steps__ingredients__food__name__unaccent', delimiter=' '), weight='B', config=language)
+            + SearchVector(StringAgg('keywords__name__unaccent', delimiter=' '), weight='B', config=language))
         trigram = (
             TrigramSimilarity('name', search_string)
             + TrigramSimilarity('description', search_string)
@@ -57,11 +58,11 @@ def search_recipes(queryset, params):
         search_rank = SearchRank(search_vectors, search_query)
         queryset = (
             queryset.annotate(
-                search=search_vectors,
+                vector=search_vectors,
                 rank=search_rank + trigram,
             )
             .filter(
-                search_vector=search_query
+                vector=search_query
             )
             .order_by('-rank'))
     else:
