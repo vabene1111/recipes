@@ -120,8 +120,8 @@ class GroupRequiredMixin(object):
 
     def dispatch(self, request, *args, **kwargs):
         if not has_group_permission(request.user, self.groups_required):
-            messages.add_message(request, messages.ERROR, _('You do not have the required permissions to view this page!'))
-            return HttpResponseRedirect(reverse_lazy('index'))
+            messages.add_message(request, messages.ERROR, _('You are not logged in and therefore cannot view this page!'))
+            return HttpResponseRedirect(reverse_lazy('account_login') + '?next=' + request.path)
 
         try:
             obj = self.get_object()
