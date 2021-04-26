@@ -3,8 +3,11 @@ import uuid
 from datetime import date, timedelta
 
 from annoying.fields import AutoOneToOneField
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import Group, User
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
@@ -13,6 +16,7 @@ from django_scopes import ScopedManager
 
 from recipes.settings import (COMMENT_PREF_DEFAULT, FRACTION_PREF_DEFAULT,
                               STICKY_NAV_PREF_DEFAULT)
+from cookbook.managers import RecipeSearchManager
 
 
 def get_user_name(self):
@@ -401,11 +405,20 @@ class Recipe(models.Model, PermissionModelMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    search_vector = SearchVectorField(null=True)
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
-    objects = ScopedManager(space='space')
+
+    # load custom manager for full text search if postgress is available
+    if settings.DATABASES['default']['ENGINE'] in ['django.db.backends.postgresql_psycopg2', 'django.db.backends.postgresql']:
+        objects = ScopedManager(_manager_class=RecipeSearchManager, space='space')
+    else:
+        objects = ScopedManager(space='space')
 
     def __str__(self):
         return self.name
+
+    class Meta():
+        indexes = (GinIndex(fields=["search_vector"]),)
 
 
 class Comment(models.Model, PermissionModelMixin):

@@ -227,8 +227,8 @@ class MealPlanViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset.filter(
-            Q(created_by=self.request.user) |
-            Q(shared=self.request.user)
+            Q(created_by=self.request.user)
+            | Q(shared=self.request.user)
         ).filter(space=self.request.space).distinct().all()
 
         from_date = self.request.query_params.get('from_date', None)

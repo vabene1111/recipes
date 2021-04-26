@@ -10,19 +10,18 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 from django.db.models import Avg, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django_scopes import scopes_disabled, scope
+from django_scopes import scopes_disabled
 from django_tables2 import RequestConfig
 from rest_framework.authtoken.models import Token
 
 from cookbook.filters import RecipeFilter
-from cookbook.forms import (CommentForm, Recipe, RecipeBookEntryForm, User,
+from cookbook.forms import (CommentForm, Recipe, User,
                             UserCreateForm, UserNameForm, UserPreference,
                             UserPreferenceForm)
 from cookbook.helper.permission_helper import group_required, share_link_valid, has_group_permission
@@ -53,14 +52,18 @@ def index(request):
         return HttpResponseRedirect(reverse('view_search'))
 
 
+# faceting
+# unaccent / likely will perform full table scan
+# create tests
 def search(request):
     if has_group_permission(request.user, ('guest',)):
         if request.user.userpreference.search_style == UserPreference.NEW:
             return search_v2(request)
-
-        f = RecipeFilter(request.GET,
-                         queryset=Recipe.objects.filter(space=request.user.userpreference.space).all().order_by('name'),
-                         space=request.space)
+        if settings.DATABASES['default']['ENGINE'] in ['django.db.backends.postgresql_psycopg2', 'django.db.backends.postgresql']:
+            qs = Recipe.objects.search(request.GET.get('name', ''), space=request.space)
+        else:
+            qs = Recipe.objects.filter(space=request.user.userpreference.space).all().order_by('name')
+        f = RecipeFilter(request.GET, queryset=qs, space=request.space)
 
         if request.user.userpreference.search_style == UserPreference.LARGE:
             table = RecipeTable(f.qs)
@@ -326,8 +329,8 @@ def history(request):
 @group_required('admin')
 def system(request):
     postgres = False if (
-            settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2'  # noqa: E501
-            or settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql'  # noqa: E501
+        settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2'  # noqa: E501
+        or settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql'  # noqa: E501
     ) else True
 
     secret_key = False if os.getenv('SECRET_KEY') else True
