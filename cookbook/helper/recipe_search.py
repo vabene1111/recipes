@@ -46,15 +46,19 @@ def search_recipes(queryset, params):
             search_type="websearch",
             config=language,
         )
-        # TODO make icontains a configurable option - it could eventually have performance impacts
+        # TODO create user options to add/remove query elements from search so that they can fine tune their own experience
+        # trigrams, icontains, unaccent and startswith all impact results and performance significantly
         search_vectors = (
             SearchVector('search_vector')
+            # searching instruction is extremely slow
+            # TODO add search vector field, GIN index and save signal to update the vector on step save
+            # + SearchVector('steps__instruction', weight='D', config=language)
             + SearchVector(StringAgg('steps__ingredients__food__name__unaccent', delimiter=' '), weight='B', config=language)
             + SearchVector(StringAgg('keywords__name__unaccent', delimiter=' '), weight='B', config=language))
         trigram = (
             TrigramSimilarity('name__unaccent', search_string)
             + TrigramSimilarity('description__unaccent', search_string)
-            # adding trigrams to ingredients causes duplicate results that can't be made unique
+            # adding trigrams to ingredients and keywords causes duplicate results that can't be made unique
             # + TrigramSimilarity('steps__ingredients__food__name__unaccent', search_string)
             # + TrigramSimilarity('keywords__name__unaccent', search_string)
         )
@@ -66,19 +70,15 @@ def search_recipes(queryset, params):
                 trigram=trigram
             )
             .filter(
+                # vector=search_query
                 Q(vector=search_query)
-                | Q(trigram__gt=0.2)
+                # adding trigrams to ingredients causes duplicate results that can't be made unique
+                # | Q(trigram__gt=0.2)
+                | Q(name__istartswith=search_string)
             )
             .order_by('-rank'))
-    else:
-        queryset = queryset.filter(name__icontains=search_string)
-
-    if len(search_keywords) > 0:
-        if search_keywords_or == 'true':
-            queryset = queryset.filter(keywords__id__in=search_keywords)
-        else:
-            for k in search_keywords:
-                queryset = queryset.filter(keywords__id=k)
+    for k in search_keywords:
+        queryset = queryset.filter(keywords__id=k)
 
     if len(search_foods) > 0:
         if search_foods_or == 'true':
