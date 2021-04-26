@@ -18,8 +18,8 @@ def update_recipe_search_vector(sender, instance=None, created=False, **kwargs):
 
     language = DICTIONARY.get(translation.get_language(), 'simple')
     instance.search_vector = (
-        SearchVector('name', weight='A', config=language)
-        + SearchVector('description', weight='C', config=language)
+        SearchVector('name__unaccent', weight='A', config=language)
+        + SearchVector('description__unaccent', weight='C', config=language)
     )
 
     try:

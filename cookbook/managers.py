@@ -34,8 +34,8 @@ class RecipeSearchManager(models.Manager):
         )
         search_vectors = (
             SearchVector('search_vector')
-            + SearchVector(StringAgg('steps__ingredients__food__name', delimiter=' '), weight='B', config=language)
-            + SearchVector(StringAgg('keywords__name', delimiter=' '), weight='B', config=language))
+            + SearchVector(StringAgg('steps__ingredients__food__name__unaccent', delimiter=' '), weight='B', config=language)
+            + SearchVector(StringAgg('keywords__name__unaccent', delimiter=' '), weight='B', config=language))
         search_rank = SearchRank(search_vectors, search_query)
         # USING TRIGRAM BREAKS WEB SEARCH
         # ADDING MULTIPLE TRIGRAMS CREATES DUPLICATE RESULTS

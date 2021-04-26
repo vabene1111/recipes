@@ -18,8 +18,8 @@ class Command(BaseCommand):
         try:
             with scopes_disabled():
                 search_vector = (
-                    SearchVector('name', weight='A')
-                    + SearchVector('description', weight='B'))
+                    SearchVector('name__unaccent', weight='A')
+                    + SearchVector('description__unaccent', weight='B'))
                 Recipe.objects.all().update(search_vector=search_vector)
 
                 self.stdout.write(self.style.SUCCESS(_('Recipe index rebuild complete.')))

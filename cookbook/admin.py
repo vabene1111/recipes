@@ -88,8 +88,8 @@ admin.site.register(Step, StepAdmin)
 def rebuild_index(modeladmin, request, queryset):
     with scopes_disabled():
         search_vector = (
-            SearchVector('name', weight='A')
-            + SearchVector('description', weight='B'))
+            SearchVector('name__unaccent', weight='A')
+            + SearchVector('description__unaccent', weight='B'))
         queryset.update(search_vector=search_vector)
 
 
