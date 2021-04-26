@@ -52,17 +52,22 @@ def search_recipes(queryset, params):
             + SearchVector(StringAgg('steps__ingredients__food__name__unaccent', delimiter=' '), weight='B', config=language)
             + SearchVector(StringAgg('keywords__name__unaccent', delimiter=' '), weight='B', config=language))
         trigram = (
-            TrigramSimilarity('name', search_string)
-            + TrigramSimilarity('description', search_string)
+            TrigramSimilarity('name__unaccent', search_string)
+            + TrigramSimilarity('description__unaccent', search_string)
+            # adding trigrams to ingredients causes duplicate results that can't be made unique
+            # + TrigramSimilarity('steps__ingredients__food__name__unaccent', search_string)
+            # + TrigramSimilarity('keywords__name__unaccent', search_string)
         )
         search_rank = SearchRank(search_vectors, search_query)
         queryset = (
             queryset.annotate(
                 vector=search_vectors,
                 rank=search_rank + trigram,
+                trigram=trigram
             )
             .filter(
-                vector=search_query
+                Q(vector=search_query)
+                | Q(trigram__gt=0.2)
             )
             .order_by('-rank'))
     else:
