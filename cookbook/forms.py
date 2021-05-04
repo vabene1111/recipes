@@ -112,6 +112,7 @@ class ImportExportBase(forms.Form):
     SAFRON = 'SAFRON'
     CHEFTAP = 'CHEFTAP'
     PEPPERPLATE = 'PEPPERPLATE'
+    RECETTETEK = 'RECETTETEK'
     RECIPESAGE = 'RECIPESAGE'
     DOMESTICA = 'DOMESTICA'
     MEALMASTER = 'MEALMASTER'
@@ -120,7 +121,7 @@ class ImportExportBase(forms.Form):
     type = forms.ChoiceField(choices=(
         (DEFAULT, _('Default')), (PAPRIKA, 'Paprika'), (NEXTCLOUD, 'Nextcloud Cookbook'),
         (MEALIE, 'Mealie'), (CHOWDOWN, 'Chowdown'), (SAFRON, 'Safron'), (CHEFTAP, 'ChefTap'),
-        (PEPPERPLATE, 'Pepperplate'), (RECIPESAGE, 'Recipe Sage'), (DOMESTICA, 'Domestica'),
+        (PEPPERPLATE, 'Pepperplate'), (RECETTETEK, 'RecetteTek'), (RECIPESAGE, 'Recipe Sage'), (DOMESTICA, 'Domestica'),
         (MEALMASTER, 'MealMaster'), (REZKONV, 'RezKonv'),
     ))
 
