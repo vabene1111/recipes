@@ -105,7 +105,18 @@ class Integration:
             try:
                 self.files = files
                 for f in files:
-                    if '.zip' in f['name'] or '.paprikarecipes' in f['name']:
+                    if 'RecipeKeeper' in f['name']:
+                        import_zip = ZipFile(f['file'])
+                        for z in import_zip.filelist:
+                            if self.import_file_name_filter(z):
+                                data_list = self.split_recipe_file(import_zip.read(z.filename).decode('utf-8'))
+                                for d in data_list:
+                                    recipe = self.get_recipe_from_file(d)
+                                    recipe.keywords.add(self.keyword)
+                                    il.msg += f'{recipe.pk} - {recipe.name} \n'
+                                    self.handle_duplicates(recipe, import_duplicates)
+                        import_zip.close()
+                    elif '.zip' in f['name'] or '.paprikarecipes' in f['name']:
                         import_zip = ZipFile(f['file'])
                         for z in import_zip.filelist:
                             if self.import_file_name_filter(z):
