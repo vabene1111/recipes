@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipes
+  labels:
+    app: recipes
+    environment: production
+    tier: frontend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: recipes
+      environment: production
+  template:
+    metadata:
+      labels:
+        app: recipes
+        environment: production
+    spec:
+      containers:
+      - name: recipes-nginx
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+            protocol: TCP
+            name: http
+        volumeMounts:
+          - mountPath: '/media'
+            name: media
+          - mountPath: '/static'
+            name: static
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx-config
+            readOnly: true
+      - name: recipes
+        image: 'vabene1111/recipes:latest'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        volumeMounts:
+          - mountPath: '/opt/recipes/mediafiles'
+            name: media
+          - mountPath: '/opt/recipes/staticfiles'
+            name: static
+        env:
+          - name: DEBUG
+            value: "0"
+          - name: ALLOWED_HOSTS
+            value: '*'
+          - name: SECRET_KEY
+            value: # CHANGEME
+          - name: DB_ENGINE
+            value: django.db.backends.postgresql_psycopg2
+          - name: POSTGRES_HOST
+            value: localhost
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            value: recipes
+          - name: POSTGRES_DB
+            value: recipes
+          - name: POSTGRES_PASSWORD
+            value: # CHANGEME
+      - name: recipes-db
+        image: 'postgres:latest'
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - mountPath: '/var/lib/postgresql/data'
+            name: database
+        env:
+          - name: POSTGRES_USER
+            value: recipes
+          - name: POSTGRES_DB
+            value: recipes
+          - name: POSTGRES_PASSWORD
+            value: # CHANGEME
+      volumes:
+        - name: database
+          persistentVolumeClaim:
+            claimName: recipes-db
+        - name: media
+          persistentVolumeClaim:
+            claimName: recipes-media
+        - name: static
+          persistentVolumeClaim:
+            claimName: recipes-static
+        - name: nginx-config
+          configMap:
+            name: recipes-nginx-config

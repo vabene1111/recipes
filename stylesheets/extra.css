@@ -1,0 +1,19 @@
+:root {
+    --md-primary-fg-color: #ffcb76;
+    --md-accent-fg-color: #FF6F00;
+
+    --md-primary-fg-color--light: #ffcb76;
+
+    /* not working part, has no effect */
+    --md-primary-bg-color: #272727;
+    --md-default-bg-color: #272727;
+    --md-default-bg-color--light: #272727;
+    --md-default-bg-color--lighter: #272727;
+    --md-default-bg-color--lightest: #272727;
+}
+
+/*
+flame dark orange #FF6F00
+background dark #272727
+tandoor #ffcb76
+*/

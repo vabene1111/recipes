@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: recipes-db
+  labels:
+    app: recipes
+    type: local
+    tier: db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data/recipes/db"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: recipes-media
+  labels:
+    app: recipes
+    type: local
+    tier: media
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data/recipes/media"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: recipes-static
+  labels:
+    app: recipes
+    type: local
+    tier: static
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data/recipes/static"

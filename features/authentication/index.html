@@ -1,0 +1,822 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Tandoor Recipe Documentation">
+      
+      
+      
+        <meta name="author" content="vabene1111">
+      
+      
+      <link rel="icon" href="../../logo_color.svg">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>Authentication - Tandoor Recipes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#allauth" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tandoor Recipes" class="md-header__button md-logo" aria-label="Tandoor Recipes" data-md-component="logo">
+      
+  <img src="../../logo_color.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tandoor Recipes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/vabene1111/recipes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tandoor Recipes" class="md-nav__button md-logo" aria-label="Tandoor Recipes" data-md-component="logo">
+      
+  <img src="../../logo_color.svg" alt="logo">
+
+    </a>
+    Tandoor Recipes
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/vabene1111/recipes/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Installation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Installation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/docker/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/unraid/" class="md-nav__link">
+        Unraid
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/synology/" class="md-nav__link">
+        Synology
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/kubernetes/" class="md-nav__link">
+        Kubernetes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/manual/" class="md-nav__link">
+        Manual
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/other/" class="md-nav__link">
+        Other setups
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templating/" class="md-nav__link">
+        Templating
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shopping/" class="md-nav__link">
+        Shopping
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Authentication
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Authentication
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#allauth" class="md-nav__link">
+    Allauth
+  </a>
+  
+    <nav class="md-nav" aria-label="Allauth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linking-accounts" class="md-nav__link">
+    Linking accounts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reverse-proxy-authentication" class="md-nav__link">
+    Reverse Proxy Authentication
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external_recipes/" class="md-nav__link">
+        Storages and Sync
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import_export/" class="md-nav__link">
+        Import/Export
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        System
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="System" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          System
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system/updating/" class="md-nav__link">
+        Updating
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system/permissions/" class="md-nav__link">
+        Permission System
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system/backup/" class="md-nav__link">
+        Backup
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribute/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#allauth" class="md-nav__link">
+    Allauth
+  </a>
+  
+    <nav class="md-nav" aria-label="Allauth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linking-accounts" class="md-nav__link">
+    Linking accounts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reverse-proxy-authentication" class="md-nav__link">
+    Reverse Proxy Authentication
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/vabene1111/recipes/tree/develop/docs/features/authentication.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Authentication</h1>
+                
+                <p>Besides the normal django username and password authentication this application supports multiple 
+methods of central account management and authentication.</p>
+<h2 id="allauth">Allauth</h2>
+<p><a href="https://django-allauth.readthedocs.io/en/latest/index.html">Django Allauth</a> is an awesome project that 
+allows you to use a <a href="https://django-allauth.readthedocs.io/en/latest/providers.html">huge number</a> of different
+authentication providers.</p>
+<p>They basically explain everything in their documentation, but the following is a short overview on how to get started.</p>
+<div class="admonition warning">
+<p class="admonition-title">Public Providers</p>
+<p>If you choose Google, Github or any other publicly available service as your authentication provider anyone
+with an account on that site can create an account on your installation.
+A new account does not have any permission but it is still <strong>not recommended</strong> to give public access to 
+your installation. </p>
+</div>
+<p>Choose a provider from the <a href="https://django-allauth.readthedocs.io/en/latest/providers.html">list</a> and install it using the environment variable <code>SOCIAL_PROVIDERS</code> as shown
+in the example below.</p>
+<div class="highlight"><pre><span></span><code><span class="na">SOCIAL_PROVIDERS</span><span class="o">=</span><span class="s">allauth.socialaccount.providers.github,allauth.socialaccount.providers.nextcloud</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Formatting</p>
+<p>The exact formatting is important so make sure to follow the steps explained here!</p>
+</div>
+<p>Depending on your authentication provider you <strong>might need</strong> to configure it. 
+This needs to be done trough the settings system. To make the system flexible (allow multiple providers) and to 
+not require another file to be mounted into the container the configuration ins done trough a single
+environment variable. The downside of this approach is that the configuration needs to be put into a single line
+as environment files loaded by docker compose don't support multiple lines for a single variable.</p>
+<p>Take the example configuration from the allauth docs, fill in your settings and then inline the whole object 
+(you can use a service like <a href="https://www.freeformatter.com/json-formatter.html">www.freeformatter.com</a> for formatting).
+Assign it to the <code>SOCIALACCOUNT_PROVIDERS</code> variable.</p>
+<div class="highlight"><pre><span></span><code><span class="na">SOCIALACCOUNT_PROVIDERS</span><span class="o">=</span><span class="s">{&quot;nextcloud&quot;:{&quot;SERVER&quot;:&quot;https://nextcloud.example.org&quot;}}</span>
+</code></pre></div>
+<div class="admonition success">
+<p class="admonition-title">Improvements ?</p>
+<p>There are most likely ways to achieve the same goal but with a cleaner or simpler system.
+If you know such a way feel free to let me know.</p>
+</div>
+<p>After that, use your superuser account to configure your authentication backend.
+Open the admin page and do the following</p>
+<ol>
+<li>Select <code>Sites</code> and edit the default site with the URL of your installation (or create a new).</li>
+<li>Create a new <code>Social Application</code> with the required information as stated in the provider documentation of allauth.</li>
+<li>Make sure to add your site to the list of available sites</li>
+</ol>
+<p>Now the provider is configured and you should be able to sign up and sign in using the provider.
+Use the superuser account to grant permissions to the newly created users.</p>
+<div class="admonition info">
+<p class="admonition-title">WIP</p>
+<p>I do not have a ton of experience with using various single signon providers and also cannot test all of them.
+If you have any Feedback or issues let me know.</p>
+</div>
+<h3 id="linking-accounts">Linking accounts</h3>
+<p>To link an account to an already existing normal user go to the settings page of the user and link it. 
+Here you can also unlink your account if you no longer want to use a social login method.</p>
+<h2 id="reverse-proxy-authentication">Reverse Proxy Authentication</h2>
+<div class="admonition info">
+<p class="admonition-title">Community Contributed Tutorial</p>
+<p>This tutorial was provided by a community member. Since I do not use reverse proxy authentication, I cannot provide any
+ assistance should you choose to use this authentication method.</p>
+</div>
+<p>In order use proxy authentication you will need to:</p>
+<ol>
+<li>Set <code>REVERSE_PROXY_AUTH=1</code> in the <code>.env</code> file</li>
+<li>Update your nginx configuration file</li>
+</ol>
+<p>Using any of the examples above will automatically generate a configuration file inside a docker volume.
+Use <code>docker volume inspect recipes_nginx</code> to find out where your volume is stored.</p>
+<div class="admonition warning">
+<p class="admonition-title">Configuration File Volume</p>
+<p>The nginx config volume is generated when the container is first run. You can change the volume to a bind mount in the
+warning <code>docker-compose.yml</code>, but then you will need to manually create it. See section <code>Volumes vs Bind Mounts</code> below
+for more information.</p>
+</div>
+<p>The following example shows a configuration for Authelia:</p>
+<div class="highlight"><pre><span></span><code>server {
+  listen 80;
+  server_name localhost;
+
+  client_max_body_size 16M;
+
+  # serve static files
+  location /static/ {
+    alias /static/;
+  }
+  # serve media files
+  location /media/ {
+    alias /media/;
+  }
+
+  # Authelia endpoint for authentication requests
+  include /config/nginx/auth.conf;
+
+  # pass requests for dynamic content to gunicorn
+  location / {
+    proxy_set_header Host $host;
+    proxy_pass http://web_recipes:8080;
+
+    # Ensure Authelia is specifically required for this endpoint
+    # This line is important as it will return a 401 error if the user doesn&#39;t have access
+    include /config/nginx/authelia.conf;
+
+    auth_request_set $user $upstream_http_remote_user;
+    proxy_set_header REMOTE-USER $user;
+  }
+
+  # Required to allow user to logout of authentication from within Recipes
+  # Ensure the &lt;auth_endpoint&gt; below is changed to actual the authentication url
+  location /accounts/logout/ {
+    return 301 http://&lt;auth_endpoint&gt;/logout
+  }
+}
+</code></pre></div>
+<p>Please refer to the appropriate documentation on how to setup the reverse proxy, authentication, and networks.</p>
+<p>Ensure users have been configured for Authelia, and that the endpoint recipes is pointed to is protected but
+available.</p>
+<p>There is a good guide to the other additional files that need to be added to your nginx set up at
+the <a href="https://docs.authelia.com/deployment/supported-proxies/nginx.html">Authelia Docs</a>.</p>
+<p>Remember to add the appropriate environment variables to <code>.env</code> file (example for nginx proxy):</p>
+<div class="highlight"><pre><span></span><code>VIRTUAL_HOST=
+LETSENCRYPT_HOST=
+LETSENCRYPT_EMAIL=
+PROXY_HEADER=
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../shopping/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Shopping
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../external_recipes/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Storages and Sync
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>
